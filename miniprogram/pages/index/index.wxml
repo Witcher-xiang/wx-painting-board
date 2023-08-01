@@ -1,0 +1,38 @@
+<!--index.wxml-->
+<view class="canvas-wrapper">
+  <view class="canvas-container">
+    <view class="canvas-box">
+      <span class="tips" wx:if="{{isPainting === false}}">请在此画布内涂画，完成后点击”提交“即可</span>
+      <canvas id="myCanvas" canvas-id="myCanvas" type="2d" disable-scroll style="width:320px;height:450px;z-index: 0;" bindtouchstart="drawTouStart" bindtouchmove="drawTouMove" bindtouchend="drawTouEnd"></canvas>
+    </view>
+  </view>
+  <view class="console">
+    <view class="console-left">
+      <image wx:if="{{selected === 'rubber'}}" class="console-icon" src="../../img/draw_icon/icon_eraser_light.png" bindtap="handleRubber" />
+      <image wx:else class="console-icon" src="../../img/draw_icon/draw_eraser_normal@3x.png" bindtap="handleRubber" />
+      <image wx:if="{{selected === 'pencil'}}" class="console-icon" src="../../img/draw_icon/icon_pen_light.png" bindtap="handlePen" />
+      <image wx:else class="console-icon" src="../../img/draw_icon/draw_pen.png" bindtap="handlePen" />
+      <image class="console-icon" src="../../img/draw_icon/draw_back_left.png" bindtap="handleBack" />
+      <image class="console-icon" src="../../img/draw_icon/draw_back_right.png" bindtap="handleGo" />
+    </view>
+    <view class="console-right" bindtap="isClearAllDraw">
+      <image class="console-icon" src="../../img/draw_icon/draw_clean.png" />
+    </view>
+  </view>
+  <view wx:if="{{isPainting === false}}" class="btn-disable">提交</view>
+  <view wx:else class="btn" bindtap="handleSubmit">提交</view>
+</view>
+<!-- 遮罩区域，模拟机情况canvs下层级会过高，真机是没问题 -->
+<cover-view class="modal {{showView?'isModalShow':'isModalHide'}}">
+  <cover-view class="modal-content">
+    <cover-view class="modal-content-title">确定要清空当前画布吗？</cover-view>
+    <cover-view class="modal-content-button">
+      <cover-image class="cancel" bindtap="hideModal" src='../../img/modal/cover_img_cancel.png'>
+        取消
+      </cover-image>
+      <cover-image class="yes" bindtap="isClearAllDrawConfirm"src='../../img/modal/cover_img_yes.png'>
+        确定
+      </cover-image>
+    </cover-view>
+  </cover-view>
+</cover-view>
