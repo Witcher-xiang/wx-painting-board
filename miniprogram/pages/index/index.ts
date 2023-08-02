@@ -13,7 +13,6 @@ Page({
   pic: [], //保存用户的操作
   timing: 0, // 记录进入页面的时间
   curveArr: [] as any,
-  beginPotin: {} as any,
   points: [] as any,
   data: {
     selected: ConsoleType.Pencil, //选中控制台的类型
@@ -78,12 +77,11 @@ Page({
     }
     console.log('目标颜色的像素数量：', count);
     return count;
-
   },
 
 
   /* 获取canvas节点 */
-  getCanvsDom() {
+  getCanvasDom() {
     wx.createSelectorQuery()
       .in(this)
       .select("#myCanvas")
@@ -94,6 +92,7 @@ Page({
         const width = res[0].width;
         const height = res[0].height;
 
+        // 设置画布大小
         canvas.width = "320";
         canvas.height = "470";
         this.canvas = canvas;
@@ -167,7 +166,7 @@ Page({
   },
 
   onReady() {
-    this.getCanvsDom();
+    this.getCanvasDom();
   },
 
   getPos(event:any){
@@ -180,6 +179,7 @@ Page({
   drawTouStart(event: any) {
     this.setData({ isPainting: true });
     this.data.isPainting = true
+    // 画笔宽度
     const lineWidth = 6;
     const rubberWidth = 20;
     const pencilColor = this.data.selected === ConsoleType.Pencil ? 'rgba(124, 74, 40,1)' : '#FFFEF7';
@@ -203,7 +203,6 @@ Page({
     let change = event.changedTouches[0];
     if (!this.curveArr) this.curveArr = [];// 由于可能未定义 做一个判断
 
-
     this.points.push({ x: change.x, y: change.y })
 
     if (this.points.length > 3) {
@@ -216,7 +215,6 @@ Page({
       this.drawLine({ x: this.sX, y: this.sY }, controlPoint, endPoint);
       this.sX = endPoint.x;
       this.sY = endPoint.y;
-      // beginPoint = endPoint;
     }
 
   },
@@ -244,9 +242,7 @@ Page({
       this.data.isPainting = false;
       this.sX = 0;
       this.sY = 0;
-      
     }
-
   },
 
   // 点击提交
@@ -254,11 +250,7 @@ Page({
     console.log("画布已提交", this.ctx.strokeStyle);
     // 像素数量
     const px = this.getPxFromCanvas();
-    wx.navigateTo({
-      url: `../loading/index?px=${px}&timing=${this.timing}`,
-    });
+   //...
   },
-
-  clear() { },
 });
 
